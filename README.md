@@ -1,4 +1,6 @@
-![](screenshot.png)
+![](./img/screenshot1.png)
+
+[More screenshots!](./img/)
 
 # Mobile Shell Task Manager
 
