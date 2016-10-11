@@ -1,3 +1,5 @@
+![](screenshot.png)
+
 # Mobile Shell Task Manager
 
 mstaskm does not have anything to do with Microsoft, nor other trademarked names titled mstaskm, please don't kill me.
