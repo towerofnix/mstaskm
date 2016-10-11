@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "fs-promise": "^0.5.0",
+    "ws": "^1.1.1"
+  },
+  "name": "mstaskm",
+  "version": "1.0.0",
+  "description": "Mobile Shell Task Manager",
+  "main": "mstaskm.js",
+  "devDependencies": {},
+  "bin": {
+    "mstaskm": "./mstaskm.js"
+  },
+  "author": "liam4",
+  "license": "MIT"
+}
