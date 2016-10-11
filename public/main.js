@@ -1,4 +1,4 @@
-const outputEl = document.getElementById('out')
+const outputEl = document.getElementById('output-container')
 
 function keyCall(key, args) {
   return function(obj) {
@@ -37,10 +37,17 @@ function taskClickHandler(id, task) {
     ws.addEventListener('message', function(event) {
       let str = event.data
 
-      // Remove colors.. D:
-      str = str.replace(/\[[0-9;]*m/g, '')
+      let source = ''
+      if (str.startsWith('E')) source = 'error'
+      else if (str.startsWith('O')) source = 'output'
+      else if (str.startsWith('!')) source = 'internal'
 
-      outputEl.value += str
+      str = str.slice(1)
+
+      const el = document.createElement('span')
+      el.appendChild(document.createTextNode(str))
+      el.classList.add('source-' + source)
+      outputEl.appendChild(el)
 
       outputEl.scrollTop = outputEl.scrollHeight
     })

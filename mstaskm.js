@@ -19,6 +19,10 @@ let tasks = null
 
 const logs = {}
 
+function nop() {
+  // Do nothing
+}
+
 function loadTasks() {
   return fsp.readFile('tasks.json', 'utf8')
     .then(contents => {
@@ -37,7 +41,7 @@ function initWSS() {
     const id = path.slice(1)
     console.log('Log connection', id)
     logs[id].push(ws)
-    ws.send('\n\n====\nConnected!\n----\n')
+    ws.send('!\n\n====\nConnected!\n----\n')
 
     ws.on('close', () => {
       logs[id].pop(logs[id].indexOf(ws))
@@ -77,23 +81,29 @@ function initExpress() {
 
     setTimeout(() => {
       const cmd = spawn(command[0], command[1])
-      cmd.stdout.on('data', data => {
-        const line = data.toString()
+
+      const handleData = x => data => {
+        let line = data.toString()
+
+        // Remove colors.. D:
+        line = line.replace(/\[[0-9;]*m/g, '')
+
         process.stdout.write(`[${id}] ${line}`)
-        console.log('From spawned - listeners:', logs[id].length)
+
+        const sent = x + line
+
         for (let ws of logs[id]) {
-          ws.send(line, function(error) {
-            console.log(error)
-          })
+          ws.send(sent, nop)
         }
-      })
+      }
+
+      cmd.stdout.on('data', handleData('O'))
+      cmd.stderr.on('data', handleData('E'))
       cmd.on('close', code => {
-        const msg = `closed with status ${code}\n`
+        const msg = `!closed with status ${code}\n`
         process.stdout.write(`[${id}] ${msg}`)
         for (let ws of logs[id]) {
-          ws.send(msg, function(error) {
-            console.log(error)
-          })
+          ws.send(msg, nop)
           ws.close()
         }
         logs[id] = []

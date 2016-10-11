@@ -47,17 +47,38 @@ body {
   border-width: 1px;
 }
 
-#out {
+#output-container {
   width: 100%;
   resize: vertical;
   font-family: monospace;
-  height: 100%;
-  background-color: white;
+  height: calc(100% - 120px);
+  background-color: #333;
   color: black;
   font-size: 0.5cm;
+  overflow-y: scroll;
+  border-style: solid solid none solid;
+  border-color: #CCC;
+  border-width: 1px;
 }
 
-#container button {
+#output-container > span {
+  display: block;
+  white-space: pre;
+}
+
+#output-container > span.source-error {
+  color: red;
+}
+
+#output-container > span.source-output {
+  color: green;
+}
+
+#output-container > span.source-internal {
+  color: orange;
+}
+
+#container > button {
   -webkit-appearance: none;
   border-radius: 3px;
   font-size: 1cm;
