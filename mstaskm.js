@@ -80,7 +80,15 @@ function initExpress() {
     console.log('Command:', command)
 
     setTimeout(() => {
-      const cmd = spawn(command[0], command[1])
+      let args = []
+
+      if (Array.isArray(command[1])) {
+        args = command[1]
+      } else {
+        args = command.slice(1)
+      }
+
+      const cmd = spawn(command[0], args)
 
       const handleData = x => data => {
         let line = data.toString()
