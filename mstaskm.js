@@ -95,7 +95,7 @@ function initExpress() {
         args = command.slice(1)
       }
 
-      const cmd = spawn(command[0], args)
+      const cmd = spawn(command[0], args, {detached: true})
 
       const handleData = x => data => {
         let line = data.toString()
@@ -113,7 +113,8 @@ function initExpress() {
       }
 
       let handleCancelAll = () => {
-        cmd.kill()
+        // Thanks, http://azimi.me/2014/12/31/kill-child_process-node-js.html!
+        process.kill(-cmd.pid)
       }
 
       eventEmitter.on('cancelAll', handleCancelAll)
