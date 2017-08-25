@@ -12,6 +12,10 @@ function getTasks() {
 }
 
 function main() {
+  document.getElementById('kill-all').addEventListener('click', function() {
+    fetch('/api/cancel-all', {method: 'post'})
+  })
+
   getTasks()
     .then(function(tasks) {
       const container = document.getElementById('container')
