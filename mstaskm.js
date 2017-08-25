@@ -7,6 +7,7 @@ const url = require('url')
 const http = require('http')
 const express = require('express')
 const fsp = require('fs-promise')
+const treeKill = require('tree-kill')
 const bodyParser = require('body-parser')
 const spawn = require('child_process').spawn
 const WebSocketServer = require('ws').Server
@@ -95,7 +96,7 @@ function initExpress() {
         args = command.slice(1)
       }
 
-      const cmd = spawn(command[0], args, {detached: true})
+      const cmd = spawn(command[0], args)
 
       const handleData = x => data => {
         let line = data.toString()
@@ -113,8 +114,7 @@ function initExpress() {
       }
 
       let handleCancelAll = () => {
-        // Thanks, http://azimi.me/2014/12/31/kill-child_process-node-js.html!
-        process.kill(-cmd.pid)
+        treeKill(cmd.pid)
       }
 
       eventEmitter.on('cancelAll', handleCancelAll)
