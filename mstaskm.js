@@ -10,6 +10,7 @@ const fsp = require('fs-promise')
 const bodyParser = require('body-parser')
 const spawn = require('child_process').spawn
 const WebSocketServer = require('ws').Server
+const EventEmitter = require('events')
 
 const app = express()
 const server = http.createServer()
@@ -17,6 +18,7 @@ const wss = new WebSocketServer({server: server})
 
 let tasks = null
 
+const eventEmitter = new EventEmitter()
 const logs = {}
 
 function nop() {
@@ -66,6 +68,11 @@ function initExpress() {
     res.end()
   })
 
+  app.post('/api/cancel-all', (req, res) => {
+    eventEmitter.emit('cancelAll')
+    res.end()
+  })
+
   app.post('/api/run-task', (req, res) => {
     const id = req.body.id
 
@@ -105,6 +112,12 @@ function initExpress() {
         }
       }
 
+      let handleCancelAll = () => {
+        cmd.kill()
+      }
+
+      eventEmitter.on('cancelAll', handleCancelAll)
+
       cmd.stdout.on('data', handleData('O'))
       cmd.stderr.on('data', handleData('E'))
       cmd.on('close', code => {
@@ -115,6 +128,8 @@ function initExpress() {
           ws.close()
         }
         logs[id] = []
+
+        eventEmitter.removeListener('cancelAll', handleCancelAll)
       })
     }, 200)
 
