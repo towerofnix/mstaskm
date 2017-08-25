@@ -16,4 +16,4 @@ Also I guess you have to do something related to bower to get it working? Becaus
 
 ## Usage
 
-Probably go to the working directory of your project. Create a [tasks.json](https://gist.github.com/liam4/37c95614364d5766a67cee2ae1f179cd) file, then run `mstaskm`. On your iPhone or whatever, go to http://(computer IP):8079. Scroll to the bottom and click buttons.
+Probably go to the working directory of your project. Create a [tasks.json](https://gist.github.com/towerofnix/37c95614364d5766a67cee2ae1f179cd) file, then run `mstaskm`. On your iPhone or whatever, go to http://(computer IP):8079. Scroll to the bottom and click buttons.
